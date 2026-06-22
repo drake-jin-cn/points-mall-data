@@ -11,11 +11,17 @@
 - **Excel Report Export** — multi-sheet `.xlsx` workbook with Pandas + openpyxl: attendance sheet, points ledger sheet, orders sheet — all with masked PII
 - **Data Dashboard Feed** — aggregated KPI metrics (total points issued, active employees, fulfillment rate) for the summary banner
 
+## Why This Tech Stack
+
+Data processing and analytics belong to Python. The ecosystem — Pandas, NumPy, openpyxl — has no equivalent in Java or Node.js for this class of work. FastAPI is chosen over Flask or Django because it is async-native (built on Starlette + uvicorn), which means the ETL HTTP calls to upstream services don't block each other. It also auto-generates interactive API docs from type annotations, matching the OpenAPI-first approach of the rest of the project.
+
+Python 3.12 is used here for the `typing` improvements and the performance gains in the interpreter — meaningful when processing large attendance and points datasets.
+
 ## Tech Stack
 
 | Layer | Technology |
 |-------|------------|
-| Framework | Python 3.11, FastAPI |
+| Framework | Python 3.12, FastAPI 0.128 |
 | ORM / DB | SQLAlchemy 2.x, PostgreSQL |
 | Data Processing | Pandas, NumPy |
 | Scheduling | APScheduler (in-process cron) |
