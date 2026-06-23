@@ -1,4 +1,6 @@
 import os
+import time
+from datetime import datetime, timezone
 from dotenv import load_dotenv
 
 # Load profile-specific env file: .env.dev / .env.test / .env.prod
@@ -9,10 +11,18 @@ from fastapi import FastAPI
 
 app = FastAPI(title="Points Mall Data Service", version="0.1.0")
 
+_start_time = time.time()
+
 
 @app.get("/health")
 def health():
-    return {"status": "ok"}
+    return {
+        "status": "ok",
+        "service": "points-mall-data",
+        "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        "db": "ok",  # No direct DB connection at this phase
+        "uptime": int(time.time() - _start_time),
+    }
 
 
 if __name__ == "__main__":
