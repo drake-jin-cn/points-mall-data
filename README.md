@@ -29,6 +29,13 @@ Python 3.12 is used here for the `typing` improvements and the performance gains
 | HTTP Client | httpx (async calls to BFF for data pull) |
 | Auth | JWT middleware (validates BFF-issued tokens) |
 
+## Docker
+
+```bash
+docker build -t points-mall-data .
+docker run --env-file .env.dev -p 8083:8083 points-mall-data
+```
+
 ## Local Development
 
 ```bash
@@ -39,14 +46,35 @@ uvicorn main:app --reload --port 8083
 # Docs: http://localhost:8083/docs
 ```
 
+## Docker
+
+```bash
+docker build -t points-mall-data .
+docker run --env-file .env.dev -p 8083:8083 points-mall-data
+```
+
 ## Key Environment Variables
 
 ```env
-DATABASE_URL=postgresql+psycopg2://postgres:password@localhost:5432/points_data
-BFF_BASE_URL=http://localhost:4000
-BFF_INTERNAL_SECRET=shared-hmac-secret
-ETL_SCHEDULE_CRON=0 2 * * *
+ENVIRONMENT=dev
+DB_HOST=
+DB_PORT=
+DB_NAME=
+DB_USERNAME=
+DB_PASSWORD=
+DB_SSL_PARAMS=?sslmode=require
+BFF_INTERNAL_URL=http://localhost:4000
 ```
+
+## Code Quality
+
+```bash
+ruff check .            # Lint
+ruff format --check .   # Check formatting
+ruff format .           # Auto-fix formatting
+```
+
+Formatting and linting run automatically on staged `.py` files via the pre-commit hook. CI runs on every PR via `.github/workflows/ci.yml` in this repository.
 
 ## Design Note
 
