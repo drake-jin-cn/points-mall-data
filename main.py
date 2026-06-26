@@ -7,7 +7,8 @@ from dotenv import load_dotenv
 _env = os.getenv("ENVIRONMENT", "dev")
 load_dotenv(f".env.{_env}", override=False)
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+from app.dependencies.auth import verify_token
 
 app = FastAPI(title="Points Mall Data Service", version="0.1.0")
 
@@ -16,13 +17,18 @@ _start_time = time.time()
 
 @app.get("/health")
 def health():
+    # Public route — no auth dependency
     return {
         "status": "ok",
         "service": "points-mall-data",
         "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-        "db": "ok",  # No direct DB connection at this phase
+        "db": "ok",
         "uptime": int(time.time() - _start_time),
     }
+
+
+# All future business routes use: dependencies=[Depends(verify_token)]
+# Example: @app.get("/reports", dependencies=[Depends(verify_token)])
 
 
 if __name__ == "__main__":
