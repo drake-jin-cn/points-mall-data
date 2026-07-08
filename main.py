@@ -1,14 +1,14 @@
 import os
 import time
 from datetime import datetime, timezone
+
 from dotenv import load_dotenv
 
 # Load profile-specific env file: .env.dev / .env.test / .env.prod
 _env = os.getenv("ENVIRONMENT", "dev")
 load_dotenv(f".env.{_env}", override=False)
 
-from fastapi import FastAPI, Depends
-from app.dependencies.auth import verify_token
+from fastapi import FastAPI  # noqa: E402
 
 app = FastAPI(title="Points Mall Data Service", version="0.1.0")
 

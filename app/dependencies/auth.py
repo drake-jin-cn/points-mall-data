@@ -1,4 +1,5 @@
 import os
+
 import jwt as pyjwt
 from fastapi import Header, HTTPException
 
@@ -23,9 +24,7 @@ def verify_token(authorization: str = Header(default=None)) -> dict:
         raise _unauthorized
 
     try:
-        payload = pyjwt.decode(
-            token, secret, algorithms=["HS256"], options={"verify_sub": False}
-        )
+        payload = pyjwt.decode(token, secret, algorithms=["HS256"], options={"verify_sub": False})
         return payload
     except pyjwt.PyJWTError:
         raise _unauthorized

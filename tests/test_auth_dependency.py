@@ -1,8 +1,8 @@
-import os
 import time
-import pytest
+
 import jwt as pyjwt
-from fastapi import FastAPI, Depends
+import pytest
+from fastapi import Depends, FastAPI
 from fastapi.testclient import TestClient
 
 TEST_SECRET = "test-jwt-secret-change-me-please"
