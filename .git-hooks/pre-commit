@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# pre-commit hook — runs Ruff on staged Python files.
+# Installed by: make setup  (or automatically via make install).
+
+STAGED_PY=$(git diff --cached --name-only --diff-filter=ACMR | grep '\.py$')
+
+if [ -z "$STAGED_PY" ]; then
+  exit 0
+fi
+
+echo "ruff: formatting and linting staged Python files..."
+echo "$STAGED_PY" | xargs ruff format || exit 1
+echo "$STAGED_PY" | xargs ruff check --fix || exit 1
+
+echo "$STAGED_PY" | xargs git add
